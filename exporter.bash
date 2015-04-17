@@ -39,6 +39,9 @@ cp "exporter_environment_variables.data" "${ENV_VARS_STORAGE_FILE}"
 
 
 cat <<-ADDTOSHELL >> $shell_config_file
+	# Change this line if you change the name or location of the exporter functions file
+	EXPORTER_FUNCTIONS_FILE=${EXPORTER_FUNCTIONS_FILE}
+
 	# Added by Exporter to Help You Add new Global Env Vars
 	source ${EXPORTER_FUNCTIONS_FILE}
 

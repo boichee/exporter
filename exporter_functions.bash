@@ -41,6 +41,7 @@ addVarToEnvironment() {
 	# That's it! We are done!
 }
 
+# This alias will be how you call this function
 alias exporter_add='addVarToEnvironment'
 
 
