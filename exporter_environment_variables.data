@@ -1,0 +1,9 @@
+# Package: Exporter
+# File: /exporter_environment_variables.data
+# Description:
+# Put any variables you want in your environment in this file (they can also be added with one of exporter's functions automatically)
+# Vars should be in the format:
+# VAR_NAME=VAR_VALUE
+#
+# Variable names CANNOT start with a number and must not have any spaces in them.
+# Also, do NOT put any spaces before or after the equals sign.
