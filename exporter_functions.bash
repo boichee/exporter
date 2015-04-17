@@ -9,7 +9,7 @@
 
 # If user has not predefined the location of the env vars storage file, set the default location
 if [ -z $ENV_VARS_STORAGE_FILE ]; then
-	ENV_VARS_STORAGE_FILE = "$HOME/.exporter_environment_variables.data"
+	ENV_VARS_STORAGE_FILE="$HOME/.exporter_environment_variables.data"
 fi
 
 

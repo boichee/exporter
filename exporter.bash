@@ -39,10 +39,13 @@ cp "exporter_environment_variables.data" "${ENV_VARS_STORAGE_FILE}"
 
 
 cat <<-ADDTOSHELL >> $shell_config_file
+	# Added by Exporter to Help You Add new Global Env Vars
+	# ---------------------------------------------------------------
+	
 	# Change this line if you change the name or location of the exporter functions file
 	EXPORTER_FUNCTIONS_FILE=${EXPORTER_FUNCTIONS_FILE}
 
-	# Added by Exporter to Help You Add new Global Env Vars
+	# Now load the exporter functions file
 	source ${EXPORTER_FUNCTIONS_FILE}
 
 	# If you change the name or location of the exporter vars storage file, please change the location in this line as well.
@@ -53,6 +56,7 @@ cat <<-ADDTOSHELL >> $shell_config_file
 ADDTOSHELL
 
 # Now actually load any environment vars already in the ENV_VARS_STORAGE_FILE
+export ENV_VARS_STORAGE_FILE="${ENV_VARS_STORAGE_FILE}"
 source "${ENV_VARS_STORAGE_FILE}"
 
 # Done!
