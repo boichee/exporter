@@ -31,12 +31,12 @@ while true; do
 	read -p "Enter answer (bash|zsh):" -r REPLY
 	case $REPLY in
 		b|bash|BASH|Bash)
-			$shell_in_use="Bash"
+			shell_in_use="Bash"
 			shell_config_file="$HOME/.bash_profile"
 			break
 		;;
 		z|zsh|ZSH|Zsh)
-			$shell_in_use="Zsh"
+			shell_in_use="Zsh"
 			shell_config_file="$HOME/.zshrc"
 			break
 		;;
@@ -56,6 +56,10 @@ ENV_VARS_STORAGE_FILE="$HOME/.exporter_environment_variables.data"
 cp "exporter_environment_variables.data" "${ENV_VARS_STORAGE_FILE}"
 
 
+
+# Let's reset the exporter config file to its starting state before we actually write to it
+cat "$EXPORTER_DIR/exporter_config_backup" > "$EXPORTER_DIR/exporter_config"
+# Now write the necessary information into that file so that it has the correct usernames, etc.
 cat <<-ADDCONFIG >> $EXPORTER_DIR/exporter_config
 
 	# Change this line if you change the name or location of the exporter functions file
@@ -72,13 +76,16 @@ cat <<-ADDCONFIG >> $EXPORTER_DIR/exporter_config
 
 ADDCONFIG
 
-# Now copy the config file into teh home directory
+# Now copy the config file into the home directory
 cp "${EXPORTER_DIR}/exporter_config" "${HOME}/.exporter_config"
 
 cat <<-SHELLSETUP >> $shell_config_file
+
+
 	# Added by Exporter
 	# ---------------------------------------------------------------
 	source "${HOME}/.exporter_config"
+	
 SHELLSETUP
 
 # Now actually load any environment vars already in the ENV_VARS_STORAGE_FILE
