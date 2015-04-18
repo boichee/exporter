@@ -88,6 +88,9 @@ cat <<-SHELLSETUP >> $shell_config_file
 	
 SHELLSETUP
 
+source $shell_config_file
+
+
 # Now actually load any environment vars already in the ENV_VARS_STORAGE_FILE
 cat <<-MSG
 	Exporter setup is complete!
