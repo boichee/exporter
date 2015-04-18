@@ -28,7 +28,7 @@ cp ${file} ${file}.exporter_uninstall_backup
 # Then the uninstaller writes the output from Exporter to a tmp file, and then we move rename that file to be the config file,
 # in turn overwriting the original (and effectively deleting the lines we didn't want.)
 
-awk '/Added by Exporter/ {line=NR} { if(NR < line || NR > line + 2 ) print NR, $0}' "${file}" > tmp && mv tmp "${file}"
+awk '/Added by Exporter/ {line=NR;} {if(NR>line+2 ||  NR < 3)  print $0}' "${file}" > tmp && mv tmp "${file}"
 done;
 
 # Let the user know exporter has been uninstalled.

@@ -19,14 +19,16 @@ addVarToEnvironment() {
 	if [ "$#" -ne "2" ]; then
 		echo "Error! You must specify two arguments" 
 		echo "Usage: $0 <env var name> <env var value>";
-		exit 1 # End process with error status
+		return 1
+		kill -INT $$
 	fi
 
 	# If we're here, user has passed the correct number of arguments, but we still have to check to make sure that what the user passed for the var name was a valid string
 	if [[ "$1" =~ ^[0-9]{1,} ]] || [[ "$1" =~ \s{1,} ]]; then
 		# The env variable name starts with a number or contains spaces
 		echo "Error! Variable name formatted incorrectly. Please try again."
-		exit 1
+		return 2
+		kill -INT $$
 	fi
 
 	# Ok, so now we should be all set to continue.
