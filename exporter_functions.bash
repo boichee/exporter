@@ -34,7 +34,7 @@ addVarToEnvironment() {
 	# Ok, so now we should be all set to continue.
 
 	# First step: write the new variable to the storage file
-	local var_statement="export ${1}=${2}"
+	local var_statement="export '${1}=${2}'"
 	echo "${var_statement}" >> "$ENV_VARS_STORAGE_FILE"
 
 	# Next step: Load that variable into the environment
