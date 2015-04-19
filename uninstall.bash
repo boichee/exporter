@@ -9,9 +9,14 @@
 # Description:
 # This file removes exporter and the things it installs
 
-# First let's just remove the additional files that exporter installs for you.
-rm $HOME/.exporter_config $HOME/.exporter_functions.bash $HOME/.exporter_environment_variables.data
+# This is set to the default installation directory. If you changed this in the installer, be sure to change it here as well.
+EXPORTER_INSTALLATION_DIR="$HOME/.exporter"
 
+# Remove exporter files AND the exporter directory 
+rm -r $EXPORTER_INSTALLATION_DIR
+
+
+# Next, we have to remove the configuration directives that we added to Zsh and/or Bash
 # Now remove the line that was added to .zshrc
 FILES_TO_MOD=("$HOME/.zshrc" "$HOME/.bash_profile")
 
@@ -50,6 +55,6 @@ cat <<-BYEMSG
 	However, if somehow your shell config file was damaged due to this uninstaller, please be aware that a backup of the file was created prior to the changes being made.
 
 	The configuration backup was named (depending upon which shell you use):
-	{.bash_profile,.zshrc}.exporter_uninstall_backup
+	.bash_profile.exporter_uninstall_backup, or .zshrc.exporter_uninstall_backup
 
 BYEMSG

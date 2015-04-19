@@ -8,8 +8,8 @@
 
 
 # If user has not predefined the location of the env vars storage file, set the default location
-if [ -z $ENV_VARS_STORAGE_FILE ]; then
-	ENV_VARS_STORAGE_FILE="$HOME/.exporter_environment_variables.data"
+if [ -z "$EXPORTER_VARIABLE_STORAGE" ]; then
+	EXPORTER_VARIABLE_STORAGE="$HOME/.exporter/exporter_environment_variables.data"
 fi
 
 
@@ -35,7 +35,7 @@ addVarToEnvironment() {
 
 	# First step: write the new variable to the storage file
 	local var_statement="export '${1}=${2}'"
-	echo "${var_statement}" >> "$ENV_VARS_STORAGE_FILE"
+	echo "${var_statement}" >> "$EXPORTER_VARIABLE_STORAGE"
 
 	# Next step: Load that variable into the environment
 	export "${1}=${2}"

@@ -11,7 +11,10 @@
 # It also adds a function that adds new env vars to the storage file
 
 # Get the current directory
-EXPORTER_DIR="$(echo "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )")"
+EXPORTER_INSTALLER_DIR="$(echo "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )")"
+
+# SET THE INSTALLATION DIRECTORY (CHANGE THIS TO CHANGE WHERE EXPORTER IS INSTALLED TO)
+EXPORTER_INSTALLATION_DIR="$HOME/.exporter"
 
 # Let people know what's going on:
 
@@ -45,53 +48,56 @@ while true; do
 	esac
 done
 
+# First, let's create the exporter directory
+
+if [ ! -d "$EXPORTER_INSTALLATION_DIR" ]; then
+	mkdir -p $EXPORTER_INSTALLATION_DIR # Creates the directory if it didn't already exist.
+fi
+
+# Now we move on to installing files and configuration stuff
 # Copy the exporter functions file into home dir
-EXPORTER_FUNCTIONS_FILE="$HOME/.exporter_functions.bash"
+EXPORTER_FUNCTIONS_FILE="$EXPORTER_INSTALLATION_DIR/exporter_functions.bash"
 cp "exporter_functions.bash" "$EXPORTER_FUNCTIONS_FILE"
 
 # Set location of storage file (default)
-ENV_VARS_STORAGE_FILE="$HOME/.exporter_environment_variables.data"
+EXPORTER_VARIABLE_STORAGE="$EXPORTER_INSTALLATION_DIR/exporter_environment_variables.data"
 
 # Copy the storage file onto the user's computer
-cp "exporter_environment_variables.data" "${ENV_VARS_STORAGE_FILE}"
+cp "exporter_environment_variables.data" "${EXPORTER_VARIABLE_STORAGE}"
 
 
+# Now copy the clean exporter config file into the home directory
+cp "${EXPORTER_INSTALLER_DIR}/exporter_config_backup" "${EXPORTER_INSTALLATION_DIR}/exporter_config"
 
-# Let's reset the exporter config file to its starting state before we actually write to it
-cat "$EXPORTER_DIR/exporter_config_backup" > "$EXPORTER_DIR/exporter_config"
-# Now write the necessary information into that file so that it has the correct usernames, etc.
-cat <<-ADDCONFIG >> $EXPORTER_DIR/exporter_config
+# Now write the necessary information into the config file so it will have the correct locations, usernames, etc.
+cat <<-ADDCONFIG >> $EXPORTER_INSTALLATION_DIR/exporter_config
 
-	# Change this line if you change the name or location of the exporter functions file
-	EXPORTER_FUNCTIONS_FILE=${EXPORTER_FUNCTIONS_FILE}
+	# The following lines configure exporter for use on your system
 
 	# Now load the exporter functions file
 	source ${EXPORTER_FUNCTIONS_FILE}
 
 	# If you change the name or location of the exporter vars storage file, please change the location in this line as well.
-	export ENV_VARS_STORAGE_FILE="$ENV_VARS_STORAGE_FILE"
+	export EXPORTER_VARIABLE_STORAGE="$EXPORTER_VARIABLE_STORAGE"
 
 	# This line actually does the work of loading the environment variables
-	source ${ENV_VARS_STORAGE_FILE}
+	source ${EXPORTER_VARIABLE_STORAGE}
 
 ADDCONFIG
 
-# Now copy the config file into the home directory
-cp "${EXPORTER_DIR}/exporter_config" "${HOME}/.exporter_config"
+
 
 cat <<-SHELLSETUP >> $shell_config_file
 
 
 	# Added by Exporter
 	# ---------------------------------------------------------------
-	source "${HOME}/.exporter_config"
+	source "${EXPORTER_INSTALLATION_DIR}/exporter_config"
 	
 SHELLSETUP
 
-source $shell_config_file
 
-
-# Now actually load any environment vars already in the ENV_VARS_STORAGE_FILE
+# Now just explain things to the user.
 cat <<-MSG
 	Exporter setup is complete!
 
